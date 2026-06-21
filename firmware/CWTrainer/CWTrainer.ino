@@ -1,8 +1,8 @@
 // CWTrainer
 //
 // by egeht exRA9MLF
-// ver. 20260518
-#define VER "0.92RC"
+// ver. 20260621
+#define VER "0.94 RC2"
 // 0.8 - замена обработки дребезга на бибоиотеку\
 // 0.81 - реализация ямбик режима, вынов всего в функции
 // 0.83 - как-то заработала, но похоже есть ошибки связанные с временем нажатия клавиш
@@ -14,7 +14,9 @@
 // 0.89 - обработка нажатия кнопок управления меню
 // 0.90 - сохранение настроек в eprom
 // 0.91 - настройка программы
-// 0.92 - RC
+// 0.92 - RC1
+// 0.93 - RC2 добавлне вывод на трнанссивер, этуляция обычного ключа (ключ нажат/не неажат)
+// 0.94 - RC2
 
 #include <SimpleButton.h>  // подавление дребезга
 #include <LiquidCrystal_I2C.h>
@@ -24,16 +26,17 @@ LiquidCrystal_I2C lcd(0x27, 16, 2);  // адрес, столбцов, строк
 
 bool IfDebug = false;  // true - включить отладку
 // bool IfDebug = true;  // true - включить отладку
-bool IfDebug1 = false;
+// bool IfDebug1 = false;
 // bool IfDebug1 = true;
-// Pin configuration
 
+// Pin configuration
 #define P_DOT 4       // D4 Connects to the dot lever of the paddle
 #define P_DASH 5      // D5 Connects to the dash lever of the paddle
 #define P_AUDIO 3     // D3 Speaker output
 #define P_LCD_SDA A4  // LCD 1602 SDA
 #define P_LCD_SCL A5  // LCD 1602 SCL
 #define P_BTN A0      // Buttons
+#define P_CW 6        // D output for transsiver
 
 // microsecs in minute
 #define US_PER_MIN 60000000
@@ -143,6 +146,7 @@ void setup() {
 
   pinMode(P_AUDIO, OUTPUT);
   pinMode(P_BTN, INPUT);
+  pinMode(P_CW, OUTPUT);
 
   btnDot.begin(P_DOT);
   btnDash.begin(P_DASH);
@@ -157,9 +161,9 @@ void setup() {
   lcd.setCursor(2, 0);  // столбец 1 строка 0
   lcd.print("(c) exRA9MLF");
 
-  lcd.setCursor(3, 1);  // столбец 4 строка 1
+  lcd.setCursor(0, 1);  // столбец 4 строка 1
   lcd.print("ver.");
-  lcd.setCursor(9, 1);  // столбец 4 строка 1
+  lcd.setCursor(5, 1);  // столбец 4 строка 1
   lcd.print(VER);
 
   // выдаем сигнал готовности VVV
@@ -259,10 +263,13 @@ void loop() {
     // прямой колюч, просто пищим
 
     if (dotIsPressed) {
-      tone(P_AUDIO, tone_frequency);
+      // нажат прямой ключ
+      digitalWrite(P_CW, HIGH);   // выдаем сигнал транссивер
+      tone(P_AUDIO, tone_frequency); 
       isToneOn = true;
     } else {
       if (isToneOn) {
+        digitalWrite(P_CW, LOW);
         noTone(P_AUDIO);
         isToneOn = false;
       }
@@ -283,6 +290,7 @@ void loop() {
         consumeElement(DOT);
         currentElement = DOT;
         stateTimerUs = micros();
+        digitalWrite(P_CW, HIGH);       // выдаем сигнал на транссивер
         tone(P_AUDIO, tone_frequency);
         addMorse('.');
         state = state_Dot;
@@ -290,6 +298,7 @@ void loop() {
         consumeElement(DASH);
         currentElement = DASH;
         stateTimerUs = micros();
+        digitalWrite(P_CW, HIGH);       // выдаем сигнал на транссивер        
         tone(P_AUDIO, tone_frequency);
         addMorse('-');
         state = state_Dash;
@@ -299,6 +308,7 @@ void loop() {
     case state_Dot:
       if (micros() - stateTimerUs >= duration_dot_us) {
         noTone(P_AUDIO);
+        digitalWrite(P_CW, LOW);       // глушим сигнал на транссивер
         silenceTimerUs = micros();
         state = state_Gap;
       }
@@ -307,6 +317,7 @@ void loop() {
     case state_Dash:
       if (micros() - stateTimerUs >= duration_dash_us) {
         noTone(P_AUDIO);
+        digitalWrite(P_CW, LOW);       // глушим сигнал на транссивер
         silenceTimerUs = micros();
         state = state_Gap;
       }
@@ -336,6 +347,7 @@ void loop() {
           consumeElement(DOT);
           currentElement = DOT;
           stateTimerUs = micros();
+          digitalWrite(P_CW, HIGH);       // выдаем сигнал на транссивер
           tone(P_AUDIO, tone_frequency);
           addMorse('.');
           state = state_Dot;
@@ -343,6 +355,7 @@ void loop() {
           consumeElement(DASH);
           currentElement = DASH;
           stateTimerUs = micros();
+          digitalWrite(P_CW, HIGH);       // выдаем сигнал на транссивер
           tone(P_AUDIO, tone_frequency);
           addMorse('-');
           state = state_Dash;
