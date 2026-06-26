@@ -1,8 +1,8 @@
 // CWTrainer
 //
 // by egeht exRA9MLF
-// ver. 20260621
-#define VER "0.94 RC2"
+// ver. 20260626
+#define VER "0.95 RC2"
 // 0.8 - замена обработки дребезга на бибоиотеку\
 // 0.81 - реализация ямбик режима, вынов всего в функции
 // 0.83 - как-то заработала, но похоже есть ошибки связанные с временем нажатия клавиш
@@ -17,6 +17,7 @@
 // 0.92 - RC1
 // 0.93 - RC2 добавлне вывод на трнанссивер, этуляция обычного ключа (ключ нажат/не неажат)
 // 0.94 - RC2
+// 0.95 - RC2 замени символ ошибки набора на "Err"
 
 #include <SimpleButton.h>  // подавление дребезга
 #include <LiquidCrystal_I2C.h>
@@ -26,7 +27,7 @@ LiquidCrystal_I2C lcd(0x27, 16, 2);  // адрес, столбцов, строк
 
 bool IfDebug = false;  // true - включить отладку
 // bool IfDebug = true;  // true - включить отладку
-// bool IfDebug1 = false;
+bool IfDebug1 = false;
 // bool IfDebug1 = true;
 
 // Pin configuration
@@ -572,7 +573,7 @@ String decodeMorse(String morseCode) {
   if (morseCode == "-.-.-") return "KA";
   if (morseCode == "...-...-...-") return "VVV";  // начало передачи
 
-  return "*";
+  return "Err";
 }
 
 uint8_t GetBtnValue() {  // Функция устраняющая дребезг
