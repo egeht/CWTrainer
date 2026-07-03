@@ -1,8 +1,8 @@
 // CWTrainer
 //
 // by egeht exRA9MLF
-// ver. 20260621
-#define VER "0.95 RC2"
+// ver. 202600703
+#define VER "1.00"
 // 0.8 - замена обработки дребезга на бибоиотеку\
 // 0.81 - реализация ямбик режима, вынов всего в функции
 // 0.83 - как-то заработала, но похоже есть ошибки связанные с временем нажатия клавиш
@@ -18,6 +18,7 @@
 // 0.93 - RC2 добавлне вывод на трнанссивер, этуляция обычного ключа (ключ нажат/не неажат)
 // 0.94 - RC2
 // 0,95 - изменил код ошибки и поменял местами точку и запятую
+// 1.00 - изменил настройку промежутков междц словами (до 14) и шаг изменения на 0,5 RELISE
 
 #include <SimpleButton.h>  // подавление дребезга
 #include <LiquidCrystal_I2C.h>
@@ -650,8 +651,8 @@ void loadSettingsFromEEPROM() {
     if (duration_dash < 2.0 || duration_dash > 4.0) duration_dash = 3.0;
     if (pause_sign < 0.5 || pause_sign > 2.0) pause_sign = 1.0;
     if (pause_letter < 2.0 || pause_letter > 5.0) pause_letter = 3.0;
-    if (pause_word < 5.0 || pause_word > 10.0) pause_word = 7.0;
-    if (tone_frequency < 200 || tone_frequency > 2000) tone_frequency = 700;
+    if (pause_word < 5.0 || pause_word > 20.0) pause_word = 7.0;
+    if (tone_frequency < 200 || tone_frequency > 1500) tone_frequency = 700;
     if (speed < 5 || speed > 50) speed = 15;
 
     if (IfDebug) {
@@ -825,8 +826,8 @@ void changeValue(bool increment) {
       updateSpeed();
       break;
     case 1:  // Freq
-      if (increment && tone_frequency < 2000) tone_frequency += 10;
-      else if (!increment && tone_frequency > 200) tone_frequency -= 10;
+      if (increment && tone_frequency < 1500) tone_frequency += 20;
+      else if (!increment && tone_frequency > 200) tone_frequency -= 20;
       break;
     case 2:  // Dash
       if (increment && duration_dash < 4.0) duration_dash += 0.1;
@@ -844,8 +845,8 @@ void changeValue(bool increment) {
       updateSpeed();
       break;
     case 5:  // Word pause
-      if (increment && pause_word < 10.0) pause_word += 0.1;
-      else if (!increment && pause_word > 5.0) pause_word -= 0.1;
+      if (increment && pause_word < 20.0) pause_word += 0.5;
+      else if (!increment && pause_word > 5.0) pause_word -= 0.5;
       updateSpeed();
       break;
     case 6:  // Mode
