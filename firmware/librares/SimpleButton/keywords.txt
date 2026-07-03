@@ -1,6 +1,0 @@
-SimpleButton    KEYWORD1
-begin   KEYWORD2
-debounce	KEYWORD2
-onRelease	KEYWORD2
-isIdle	KEYWORD2
-isHeld	KEYWORD2
