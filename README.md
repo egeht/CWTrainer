@@ -1,5 +1,5 @@
 # CWTrainer
-# CWTrainer
+
 Arduino nano CW electronic key/trainer
 
 I needed an electronic CW key to learn Morse code (for practicing transmission). I came across an old key project from a radio amateur with the call sign PA3HCM (https://www.pa3hcm.nl/?p=1010). I used it as a basis. In the process, I modified the program so much that nothing remained of the original. :-)
@@ -27,6 +27,7 @@ This isn't a full-fledged simulator; it doesn't give you any tasks. And it doesn
 
 You can see an example of it here - https://youtube.com/shorts/XV8_UpXhKHY?feature=share
 
+# CWTrainer
 
 Arduino nano CW электронный ключ/тренажер
  
