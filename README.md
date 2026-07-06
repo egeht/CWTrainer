@@ -1,4 +1,33 @@
 # CWTrainer
+# CWTrainer
+Arduino nano CW electronic key/trainer
+
+I needed an electronic CW key to learn Morse code (for practicing transmission). I came across an old key project from a radio amateur with the call sign PA3HCM (https://www.pa3hcm.nl/?p=1010). I used it as a basis. In the process, I modified the program so much that nothing remained of the original. :-)
+
+The circuit diagram is almost unchanged (there's not much to change), I just replaced the board with an Arduino nano. To output sound to a speaker or headphones, I added a PAM8403 amplifier and a volume control. Just in case, I connected it to a transceiver, but I don't know why. If desired, you can plug a 3.5mm jack with an LED soldered onto it and see the light signals. I added four buttons to control the key setup menu. I also designed the enclosure.
+
+What it can do:
+- Works in iambic modes A and B.
+- Works with a classic straight key.
+When working with an iambic key, it displays the transmitted dots/dashes (on the bottom line) and the transmitted character (on the top line). This allows you to monitor the transmission.
+
+The following parameters are configurable and stored in non-volatile memory:
+- speed in WPM
+- dash duration
+- pause duration between signals
+- pause duration between characters
+- pause duration between words
+All durations are entered in dot durations.
+
+A printed circuit board (PCB) with a connector for the Arduino and a board with an audio amplifier and a volume control resistor is mounted on the bottom of the case (bottom step). The LCD1602 screen, a PCB with buttons, three connectors, and a speaker are mounted on the top of the case (top step).
+
+I won't give any details on the components and layout, as everyone will have to use what they have on hand for this project.
+
+This isn't a full-fledged simulator; it doesn't give you any tasks. And it doesn't check whether you've typed the right thing. It only shows what you've entered. But that's all I needed. :-)
+
+You can see an example of it here - https://youtube.com/shorts/XV8_UpXhKHY?feature=share
+
+
 Arduino nano CW электронный ключ/тренажер
  
 Мне понадобился электронный CW ключ для изучения азбуки Морзе (для тренировки передачи). На глаза попался старый проект ключа от радиолюбителя с позывным PA3HCM (https://www.pa3hcm.nl/?p=1010). Взял его за основу. в процессе доработал программу так, что от оригинала ничего не осталось. :-)
